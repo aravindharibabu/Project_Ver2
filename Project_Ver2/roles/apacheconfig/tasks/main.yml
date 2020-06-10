@@ -1,0 +1,46 @@
+-
+  name: 'Apache2 Configuration'
+  hosts: web_server
+  tasks:
+    - name: 'Install Firewall'
+      yum:
+        name: httpd
+        state: latest
+      become: yes
+    - name: 'Enable Apache2 Service'
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      become: yes
+
+-
+  name: 'Firewall Setup'
+  hosts: web_server
+  tasks:
+    - name: Install Firewall
+      yum:
+        name: firewalld
+        state: latest
+        enabled: yes
+      become: yes
+
+    - name: 'Firewall Configuration'
+      firewalld:
+        port: 80/tcp
+        state: enabled
+        permanent: yes
+      become: yes
+
+    - name: 'Firewall Configuration'
+      firewalld:
+        port: 443/tcp
+        state: enabled
+        permanent: yes
+      become: yes
+
+    - name: 'Restart Firewall'
+      service:
+        name: firewalld
+        state: restarted
+      become: yes

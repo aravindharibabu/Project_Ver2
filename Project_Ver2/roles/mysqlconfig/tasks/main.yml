@@ -1,0 +1,32 @@
+---
+# tasks file for mysqlconfig
+
+- name: MYSQL Configuration
+  hosts: db_server
+  tasks:
+    - name: Install MYSQL
+      yum:
+        name: https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+        state: present
+      become: yes
+
+    - name: MYSQL Service
+      service:
+        name: mysqld
+        state: enabled
+      become: yes
+
+- name: DB Configuration
+  hosts: db_server
+  tasks:
+    - name: User Creation
+      mysql_user:
+        name: dbuser
+        password: password
+        priv: '*.*:ALL'
+        state: present
+
+    - name: DB Creation
+      mysql_db:
+        name: db1
+        state: present

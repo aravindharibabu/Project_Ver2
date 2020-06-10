@@ -1,0 +1,6 @@
+---
+- name: LAMP Stack Configuration
+  hosts: all
+  roles:
+    - mysqlconfig
+    - apacheconfig
